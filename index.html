@@ -1,0 +1,95 @@
+<!doctype HTML>
+<html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">  
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+ <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> 
+ <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script> 
+<!-- <script src="static/aframe.min.js"></script> -->
+<!-- <script src="static/aframe-ar.js"></script> -->
+
+<script>
+    window.onload = function () {
+        document.getElementById("button1").addEventListener("click", function () {
+            document.getElementById("table1").style.visibility="visible";
+        });
+    };
+</script>
+<script>
+  AFRAME.registerComponent('markerhandler', {
+    init: function () {
+      this.el.addEventListener('markerFound', () => {
+        var markerId = this.el.id;
+        console.log(markerId)
+        if (markerId=="marker1")
+        {
+            document.getElementById("mybuttons").style.visibility ="visible";
+        }
+      })
+      this.el.addEventListener('markerLost', () => {
+        document.getElementById("mybuttons").style.visibility="hidden";
+        document.getElementById("table1").style.visibility="hidden";
+      })
+    }
+  });
+</script>
+<style>
+  .buttons {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    visibility: hidden;
+  }
+  .tables {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    visibility: hidden;
+  }
+</style>
+<body style="margin: 0px; overflow: hidden;">
+   <div class="tables" id="table1">
+        <table border="1" width="40%" style="background-color: aqua;">
+            <tr><td>
+                Height: 35 - 50 cm (Adult, At Shoulder)<br>
+                Mass: 2.2 - 14 kg (Adult)<br>
+                Length: 45 - 90 cm (Adult, Without Tail)<br>
+            </td></tr>
+        </table>
+  </div>
+  <div class="buttons" id="mybuttons">
+    <button  id="button1">Size</button>&nbsp;
+  </div>
+
+  <a-scene
+  vr-mode-ui="enabled: false;"
+  renderer="logarithmicDepthBuffer: true;"
+  embedded
+  arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+
+    <a-assets>
+      <a-asset-item id="fox" src="static/Fox.gltf"></a-asset-item>
+    </a-assets>
+
+    <a-marker id="marker1" markerhandler type="pattern" url="static/hiro.patt">
+      <a-entity   position="0 0 0" 
+                  rotation="0 90 0"
+                  scale="0.01 0.01 0.01"
+                  gltf-model="#fox">
+      </a-entity>
+  </a-marker>
+    
+  <a-entity camera></a-entity>
+    
+</a-scene>
+</body>
+</html>
